@@ -1,7 +1,9 @@
 plugins {
-    kotlin("multiplatform")
-    id("com.android.application")
-    id("org.jetbrains.compose")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.compose)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 kotlin {
@@ -35,9 +37,4 @@ android {
     kotlin {
         jvmToolchain(17)
     }
-}
-
-dependencies {
-    implementation("io.insert-koin:koin-core:3.5.3")
-    implementation("io.insert-koin:koin-android:3.5.3")
 }

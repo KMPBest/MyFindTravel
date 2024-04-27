@@ -65,7 +65,9 @@ fun RootNavigation(
         val currentIScreen  = currentScreen as IScreens
 
         Column(modifier = modifier.fillMaxSize()) {
-            AnimatedVisibility(currentIScreen != IScreens.Home){
+            val isToolbarInvisible = (currentScreen == IScreens.Home)
+                    || (currentScreen == IScreens.Signin)
+            AnimatedVisibility(!isToolbarInvisible){
                 MyAppToolbar(
                     title = currentScreen.getTitle(),
                     onNavigationIconClick = { navigator.pop() }

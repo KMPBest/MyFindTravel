@@ -10,7 +10,7 @@ enum class BottomNavItem(val iconRes: String){
         return when (this) {
             Home -> IScreens.Home
             TopFlights -> IScreens.TopFlight
-            Profile -> IScreens.Profile
+            Profile -> IScreens.Signin
             More -> IScreens.More
         }
     }
@@ -20,7 +20,7 @@ fun IScreens.asBottomNavItem(): BottomNavItem {
     return when (this) {
         IScreens.Home -> BottomNavItem.Home
         IScreens.More -> BottomNavItem.More
-        IScreens.Profile -> BottomNavItem.Profile
+        IScreens.Signin -> BottomNavItem.Profile
         IScreens.TopFlight -> BottomNavItem.TopFlights
         else -> BottomNavItem.Home
     }

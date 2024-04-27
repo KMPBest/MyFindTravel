@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "630844940987",
+    "project_id": "findtravel-kmp",
+    "storage_bucket": "findtravel-kmp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630844940987:android:4a0ba7efb06652d58a3f9e",
+        "android_client_info": {
+          "package_name": "com.myapplication.MyApplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630844940987-lmdier3fj7v02rf3r80696cat2kc2s0h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myapplication.MyApplication",
+            "certificate_hash": "ef1d993d10770f1a7659aef241196089c7790d5d"
+          }
+        },
+        {
+          "client_id": "630844940987-rg3d5f5rt92pm6q2qom6c4i3iptf5s05.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR_xSyuGG6Bfgt6fXFSLQVzxXigH89C7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630844940987-rg3d5f5rt92pm6q2qom6c4i3iptf5s05.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

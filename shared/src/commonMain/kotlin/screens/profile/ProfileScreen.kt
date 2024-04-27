@@ -25,5 +25,4 @@ fun ProfileScreen(
     ) {
         item { Text(text = "ProfileScreen") }
     }
-
 }

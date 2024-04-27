@@ -2,8 +2,10 @@ package data.di
 
 import data.repository.FlightsRepository
 import data.repository.GlobalAppRepository
+import data.repository.UserRepository
 import data.source.remote.apiService.FlightsApiService
 import data.source.remote.apiService.GlobalApiService
+import data.source.remote.apiService.UserApiService
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpSend
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -20,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.serialization.json.Json
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import kotlin.coroutines.CoroutineContext
@@ -59,6 +62,7 @@ private val remoteSourceModule = module {
     }
     factoryOf(::GlobalApiService)
     factoryOf(::FlightsApiService)
+    factoryOf(::UserApiService)
 }
 
 
@@ -67,6 +71,7 @@ private val repositoryModule = module {
     factory { Dispatchers.IO } bind CoroutineContext::class
     factoryOf(::GlobalAppRepository)
     factoryOf(::FlightsRepository)
+    singleOf(::UserRepository)
 }
 
 val dataModule = module {

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>630844940987-635g19osk6l0a49uh3ec441npj7g07dn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.630844940987-635g19osk6l0a49uh3ec441npj7g07dn</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>630844940987-lmdier3fj7v02rf3r80696cat2kc2s0h.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB2tQxc5yEhOiZ6m_3Hj386UyDLisZrkWg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>630844940987</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.myapplication.MyApplication</string>
+	<key>PROJECT_ID</key>
+	<string>findtravel-kmp</string>
+	<key>STORAGE_BUCKET</key>
+	<string>findtravel-kmp.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:630844940987:ios:de8b362dff47cddc8a3f9e</string>
+</dict>
+</plist>

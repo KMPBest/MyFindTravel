@@ -22,6 +22,21 @@
 	<true/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+
+	<key>GIDServerClientID</key>
+    <string>630844940987-rg3d5f5rt92pm6q2qom6c4i3iptf5s05.apps.googleusercontent.com</string>
+    <key>GIDClientID</key>
+    <string>630844940987-635g19osk6l0a49uh3ec441npj7g07dn.apps.googleusercontent.com</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>com.googleusercontent.apps.630844940987-635g19osk6l0a49uh3ec441npj7g07dn</string>
+        </array>
+      </dict>
+    </array>
+
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

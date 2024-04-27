@@ -1,14 +1,15 @@
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
-    id("org.jetbrains.compose")
-    kotlin("plugin.serialization").version("1.9.21")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlinNativeCocoapods)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.compose)
 }
 
 kotlin {
     androidTarget()
 
-    jvm("desktop")
+//    jvm("desktop")
 
     listOf(
         iosX64(),
@@ -20,6 +21,19 @@ kotlin {
             isStatic = true
         }
     }
+
+    cocoapods {
+        ios.deploymentTarget = "14.1"
+        version = "1.0.0"
+        summary = "Shared module of FindTravelNow"
+        homepage = "https://github.com/KmmBest/MyFindTravel"
+        framework {
+            baseName = "shared"
+            isStatic = true
+//            export(libs.kmpNotifier)
+        }
+    }
+
 
     //Generating BuildConfig for multiplatform
     val buildConfigGenerator by tasks.registering(Sync::class) {
@@ -64,48 +78,54 @@ kotlin {
 
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-                implementation("io.ktor:ktor-client-logging:$ktorVersion")
-                implementation("media.kamel:kamel-image:0.9.1")
+                implementation(libs.bundles.koin)
+                implementation(libs.bundles.voyager)
+                implementation(libs.bundles.ktor)
+                implementation(libs.multiplatformSettings.noargs)
+                implementation(libs.kotlinx.serialization)
+                implementation(libs.kotlinx.datetime)
+                implementation(libs.napier)
+//                api(libs.kmpNotifier)
+                implementation(libs.kmpAuth.firebase)
+                implementation(libs.kmpAuth.uihelper)
+                implementation(libs.kmpAuth.google)
 
-                // Navigator
-                implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
-                implementation("cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyagerVersion")
-                implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
-                implementation("cafe.adriel.voyager:voyager-screenmodel:$voyagerVersion")
+                implementation(libs.coil.compose)
+                implementation(libs.coil.ktor)
 
-                implementation("io.insert-koin:koin-core:$koinVersion")
-
-                implementation("io.github.aakira:napier:$napierVersion")
+                implementation(libs.kmprevenuecat.purchases)
+                implementation(libs.kmprevenuecat.purchases.ui)
             }
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.activity:activity-compose:1.7.2")
-                api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.10.1")
+                api(libs.androidx.activity.compose)
+                api(libs.androidx.appcompat)
+                api(libs.androidx.core)
+                api(libs.androidx.lifecycle.runtime.compose)
+                api(libs.koin.android)
 
-                implementation("io.ktor:ktor-client-android:$ktorVersion")
-                implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+                //Firebase
+                api(project.dependencies.platform(libs.firebase.bom))
+                api(libs.firebase.analytics)
+                api(libs.firebase.crashlytics)
+                api(libs.firebase.messaging)
             }
-
         }
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
         val iosMain by creating {
+            resources.srcDirs("src/commonMain/resources","src/iosMain/resources")
+
             dependsOn(commonMain)
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
 
             dependencies {
-                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+                implementation(libs.ktor.client.darwin)
             }
         }
     }
