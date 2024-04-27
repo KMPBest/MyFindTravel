@@ -2,10 +2,14 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 # [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform) application
 
-[Simulator Screenshot - iPhone 15 Pro - 2024-04-27 at 20 52 51](https://github.com/KMPBest/MyFindTravel/assets/75264221/a4d86a83-9b41-46d3-bd97-c0045d4dfc18)
-![Simulator Screenshot - iPhone 15 Pro - 2024-04-27 at 20 52 56](https://github.com/KMPBest/MyFindTravel/assets/75264221/bb739398-86b7-45d8-b274-d74a52a495a2)
-![Simulator Screenshot - iPhone 15 Pro - 2024-04-27 at 20 52 59](https://github.com/KMPBest/MyFindTravel/assets/75264221/db84f442-f0c1-49f4-ba65-3b8cf29a6dc9)
-![Simulator Screenshot - iPhone 15 Pro - 2024-04-27 at 20 53 02](https://github.com/KMPBest/MyFindTravel/assets/75264221/564fbea8-11a5-4592-aa10-3c849b9b95f5)
+## Screenshots
+
+<p style="text-align: center;">
+  <img src="https://github.com/KMPBest/MyFindTravel/assets/75264221/a4d86a83-9b41-46d3-bd97-c0045d4dfc18" width="200" alt="Screen1"/>
+  <img src="https://github.com/KMPBest/MyFindTravel/assets/75264221/bb739398-86b7-45d8-b274-d74a52a495a2" width="200" alt="Screen2"/>
+  <img src="https://github.com/KMPBest/MyFindTravel/assets/75264221/db84f442-f0c1-49f4-ba65-3b8cf29a6dc9" width="200" alt="Screen3"/>
+  <img src="https://github.com/KMPBest/MyFindTravel/assets/75264221/564fbea8-11a5-4592-aa10-3c849b9b95f5" width="200" alt="Screen4"/>
+</p>
 
 This template has been archived.
 
