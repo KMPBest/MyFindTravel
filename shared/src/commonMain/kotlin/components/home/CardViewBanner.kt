@@ -25,58 +25,59 @@ import configs.uis.Red_48
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
-
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun CardViewBanner(modifier: Modifier = Modifier) {
-    val shape = RoundedCornerShape(9.dp)
-    val gradient = Brush.verticalGradient(0f to Red_48, 1f to Orange_55)
+  val shape = RoundedCornerShape(9.dp)
+  val gradient = Brush.verticalGradient(0f to Red_48, 1f to Orange_55)
+  Box(
+    modifier = Modifier.fillMaxWidth().clip(shape).background(gradient).padding(start = 16.dp),
+  ) {
     Box(
-        modifier = Modifier.fillMaxWidth().clip(shape).background(gradient).padding(start = 16.dp)
+      modifier = Modifier.align(Alignment.TopEnd).fillMaxWidth(0.5f),
     ) {
-        Box(
-            modifier = Modifier.align(Alignment.TopEnd).fillMaxWidth(0.5f)
-        ){
-            Image(
-                painter = painterResource("drawable/ic_ellipse.xml"),
-                contentDescription = null,
-                modifier = Modifier.align(Alignment.BottomEnd).padding(end = 4.dp, bottom = 11.dp),
-                contentScale = ContentScale.Fit
-            )
+      Image(
+        painter = painterResource("drawable/ic_ellipse.xml"),
+        contentDescription = null,
+        modifier = Modifier.align(Alignment.BottomEnd).padding(end = 4.dp, bottom = 11.dp),
+        contentScale = ContentScale.Fit,
+      )
 
-            Image(
-                painter = painterResource("drawable/img_travel_person.png"),
-                contentDescription = null,
-                modifier = Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 19.dp),
-                contentScale = ContentScale.Crop
-            )
-        }
-
-        Column (
-            modifier = Modifier.fillMaxWidth(0.58f).padding(vertical = 30.dp)
-        ) {
-            Text(
-                text = "Get cheap flights from 100s of airlines and travel agents",
-                style = MaterialTheme.typography.titleSmall,
-                color = Color.White
-            )
-            val buttonShape = RoundedCornerShape(8.dp)
-            val emptyFunction: () -> Unit = {}
-            Button(
-                modifier = Modifier.padding(top = 16.dp).clip(buttonShape)
-                    .background(Black_10, buttonShape),
-                shape = buttonShape,
-                onClick = emptyFunction,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Black_10
-                )
-            ){
-                Text(
-                    text = "Book Now",
-                    color = Color.White,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-        }
+      Image(
+        painter = painterResource("drawable/img_travel_person.png"),
+        contentDescription = null,
+        modifier = Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 19.dp),
+        contentScale = ContentScale.Crop,
+      )
     }
+
+    Column(
+      modifier = Modifier.fillMaxWidth(0.58f).padding(vertical = 30.dp),
+    ) {
+      Text(
+        text = "Get cheap flights from 100s of airlines and travel agents",
+        style = MaterialTheme.typography.titleSmall,
+        color = Color.White,
+      )
+      val buttonShape = RoundedCornerShape(8.dp)
+      val emptyFunction: () -> Unit = {}
+      Button(
+        modifier =
+          Modifier.padding(top = 16.dp).clip(buttonShape)
+            .background(Black_10, buttonShape),
+        shape = buttonShape,
+        onClick = emptyFunction,
+        colors =
+          ButtonDefaults.buttonColors(
+            containerColor = Black_10,
+          ),
+      ) {
+        Text(
+          text = "Book Now",
+          color = Color.White,
+          style = MaterialTheme.typography.bodySmall,
+        )
+      }
+    }
+  }
 }

@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GlobalAppConfigResponse(
-    @SerialName("is_update_required") val isUpdateRequired: Boolean = false,
+  @SerialName("is_update_required") val isUpdateRequired: Boolean = false,
 ) : DomainMapper<GlobalAppConfig> {
-    override fun mapToDomainModel(): GlobalAppConfig {
-        return GlobalAppConfig(isUpdateRequired = isUpdateRequired)
-    }
+  override fun mapToDomainModel(): GlobalAppConfig {
+    return GlobalAppConfig(isUpdateRequired = isUpdateRequired)
+  }
 }

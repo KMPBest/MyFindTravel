@@ -5,7 +5,7 @@ package domain.mapper
  * This is for mapping data layer objects to domain layer models
  */
 interface DomainMapper<DomainModel> {
-    fun mapToDomainModel(): DomainModel
+  fun mapToDomainModel(): DomainModel
 }
 
 /**
@@ -13,7 +13,7 @@ interface DomainMapper<DomainModel> {
  */
 
 interface EntityMapper<DomainModel, DatabaseEntity> {
-    fun mapToEntity(domainObj: DomainModel): DatabaseEntity
+  fun mapToEntity(domainObj: DomainModel): DatabaseEntity
 }
 
 /**
@@ -21,5 +21,5 @@ interface EntityMapper<DomainModel, DatabaseEntity> {
  */
 
 interface NetworkMapper<DomainModel, NetworkRequestObj> {
-    fun mapToNetworkRequest(domainObj: DomainModel): NetworkRequestObj
+  fun mapToNetworkRequest(domainObj: DomainModel): NetworkRequestObj
 }

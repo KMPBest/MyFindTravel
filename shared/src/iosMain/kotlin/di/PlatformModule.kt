@@ -9,7 +9,8 @@ import utils.AppOpenerUtilImpl
 import utils.AppVersion
 import utils.IosAppVersion
 
-internal actual val platformModule: Module = module {
+internal actual val platformModule: Module =
+  module {
     factoryOf(::AppOpenerUtilImpl) bind AppOpenerUtil::class
     factoryOf(::IosAppVersion) bind AppVersion::class
-}
+  }

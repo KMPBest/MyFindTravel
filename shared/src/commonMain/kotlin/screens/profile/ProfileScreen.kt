@@ -12,17 +12,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ProfileScreen(
-) {
-    val systemBarPaddingValues = WindowInsets.systemBars.asPaddingValues()
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
-            .padding(
-                start = 30.dp,
-                end = 30.dp,
-                top = systemBarPaddingValues.calculateTopPadding()
-            )
-    ) {
-        item { Text(text = "ProfileScreen") }
-    }
+fun ProfileScreen() {
+  val systemBarPaddingValues = WindowInsets.systemBars.asPaddingValues()
+  LazyColumn(
+    modifier =
+      Modifier.fillMaxSize()
+        .padding(
+          start = 30.dp,
+          end = 30.dp,
+          top = systemBarPaddingValues.calculateTopPadding(),
+        ),
+  ) {
+    item { Text(text = "ProfileScreen") }
+  }
 }

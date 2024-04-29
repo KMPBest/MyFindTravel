@@ -29,96 +29,103 @@ import platform.darwin.NSObject
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable
-actual fun WebView(modifier: Modifier, url: String) {
-    Box(modifier = modifier) {
-        var isLoading by remember { mutableStateOf(true) }
-        val uiDelegate = remember { WKUiDelegate() }
-        val navigationDelegate = remember {
-            WKNavigationDelegate {
-                isLoading = it
-            }
+actual fun WebView(
+  modifier: Modifier,
+  url: String,
+) {
+  Box(modifier = modifier) {
+    var isLoading by remember { mutableStateOf(true) }
+    val uiDelegate = remember { WKUiDelegate() }
+    val navigationDelegate =
+      remember {
+        WKNavigationDelegate {
+          isLoading = it
         }
-        UIKitView(
-            modifier = Modifier.fillMaxSize(),
-            factory = {
-                val config = WKWebViewConfiguration().apply {
-                    allowsInlineMediaPlayback = true
-                    preferences = WKPreferences().apply {
-                        javaScriptEnabled = true
-                        javaScriptCanOpenWindowsAutomatically = true
-                    }
-                }
-                WKWebView(
-                    frame = CGRectZero.readValue(),
-                    configuration = config
-                ).apply {
-                    userInteractionEnabled = true
-                    allowsBackForwardNavigationGestures = true
-                    this.setUIDelegate(uiDelegate)
-                    this.navigationDelegate = navigationDelegate
-                    loadRequest(request = NSURLRequest(NSURL(string = url)))
-                }
+      }
+    UIKitView(
+      modifier = Modifier.fillMaxSize(),
+      factory = {
+        val config =
+          WKWebViewConfiguration().apply {
+            allowsInlineMediaPlayback = true
+            preferences =
+              WKPreferences().apply {
+                javaScriptEnabled = true
+                javaScriptCanOpenWindowsAutomatically = true
+              }
+          }
+        WKWebView(
+          frame = CGRectZero.readValue(),
+          configuration = config,
+        ).apply {
+          userInteractionEnabled = true
+          allowsBackForwardNavigationGestures = true
+          this.setUIDelegate(uiDelegate)
+          this.navigationDelegate = navigationDelegate
+          loadRequest(request = NSURLRequest(NSURL(string = url)))
+        }
+      },
+      onRelease = {
+        it.navigationDelegate = null
+        it.setUIDelegate(null)
+      },
+    )
 
-            },
-            onRelease = {
-                it.navigationDelegate = null
-                it.setUIDelegate(null)
-            })
-
-        if (isLoading)
-            MyAppCircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
+    if (isLoading) {
+      MyAppCircularProgressIndicator(
+        modifier = Modifier.align(Alignment.Center),
+      )
     }
+  }
 }
 
 /**
  * This solves new window or new tab opening in ios web view
  */
 private class WKUiDelegate : WKUIDelegateProtocol, NSObject() {
-    override fun webView(
-        webView: WKWebView,
-        createWebViewWithConfiguration: WKWebViewConfiguration,
-        forNavigationAction: WKNavigationAction,
-        windowFeatures: WKWindowFeatures,
-    ): WKWebView? {
-        val frame = forNavigationAction.targetFrame
-        val isMainFrame = frame?.isMainFrame() ?: false
-        if (!isMainFrame) webView.loadRequest(forNavigationAction.request)
-        return null
-    }
+  override fun webView(
+    webView: WKWebView,
+    createWebViewWithConfiguration: WKWebViewConfiguration,
+    forNavigationAction: WKNavigationAction,
+    windowFeatures: WKWindowFeatures,
+  ): WKWebView? {
+    val frame = forNavigationAction.targetFrame
+    val isMainFrame = frame?.isMainFrame() ?: false
+    if (!isMainFrame) webView.loadRequest(forNavigationAction.request)
+    return null
+  }
 }
 
 @Suppress("CONFLICTING_OVERLOADS")
-class WKNavigationDelegate(private val onLoadingStateChanged: (Boolean) -> Unit = {}) : NSObject(),
-    WKNavigationDelegateProtocol {
+class WKNavigationDelegate(private val onLoadingStateChanged: (Boolean) -> Unit = {}) :
+  NSObject(),
+  WKNavigationDelegateProtocol {
+  // On start loading
+  override fun webView(
+    webView: WKWebView,
+    didStartProvisionalNavigation: WKNavigation?,
+  ) {
+    onLoadingStateChanged(true)
+  }
 
-    //On start loading
-    override fun webView(
-        webView: WKWebView,
-        didStartProvisionalNavigation: WKNavigation?,
-    ) {
-        onLoadingStateChanged(true)
-    }
+  /**
+   * onRequest loaded
+   */
+  override fun webView(
+    webView: WKWebView,
+    didFinishNavigation: WKNavigation?,
+  ) {
+    onLoadingStateChanged(false)
+  }
 
-    /**
-     * onRequest loaded
-     */
-    override fun webView(
-        webView: WKWebView,
-        didFinishNavigation: WKNavigation?,
-    ) {
-        onLoadingStateChanged(false)
-    }
-
-    /**
-     * onRequestError
-     */
-    override fun webView(
-        webView: WKWebView,
-        didFailProvisionalNavigation: WKNavigation?,
-        withError: NSError,
-    ) {
-        onLoadingStateChanged(false)
-    }
+  /**
+   * onRequestError
+   */
+  override fun webView(
+    webView: WKWebView,
+    didFailProvisionalNavigation: WKNavigation?,
+    withError: NSError,
+  ) {
+    onLoadingStateChanged(false)
+  }
 }

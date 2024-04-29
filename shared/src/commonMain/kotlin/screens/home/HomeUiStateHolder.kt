@@ -10,23 +10,24 @@ import utils.UiStateHolder
 import utils.logging.AppLogger
 import utils.uiStateHolderScope
 
-class HomeUiStateHolder(private val flightsRepository: FlightsRepository): UiStateHolder() {
-    private val _uiState = MutableStateFlow(HomeScreenUiState())
-    val uiState = _uiState.asStateFlow()
+class HomeUiStateHolder(private val flightsRepository: FlightsRepository) : UiStateHolder() {
+  private val _uiState = MutableStateFlow(HomeScreenUiState())
+  val uiState = _uiState.asStateFlow()
 
-    init {
-        AppLogger.e("UiStateHolder is initialized")
-        getTop5Flights()
-    }
+  init {
+    AppLogger.e("UiStateHolder is initialized")
+    getTop5Flights()
+  }
 
-    private fun getTop5Flights() = uiStateHolderScope.launch {
-        with(_uiState.value) {
-            flightsRepository.getTop5Flights(origin = null)
-                .onSuccess { resultData ->
-                    _uiState.update {
-                        it.copy(topFlightInfoList = resultData.flights.take(2))
-                    }
-                }
-        }
+  private fun getTop5Flights() =
+    uiStateHolderScope.launch {
+      with(_uiState.value) {
+        flightsRepository.getTop5Flights(origin = null)
+          .onSuccess { resultData ->
+            _uiState.update {
+              it.copy(topFlightInfoList = resultData.flights.take(2))
+            }
+          }
+      }
     }
 }

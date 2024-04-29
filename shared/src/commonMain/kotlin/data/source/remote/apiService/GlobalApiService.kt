@@ -8,9 +8,10 @@ import io.ktor.client.request.get
 import utils.AppVersion
 
 class GlobalApiService(private val httpClient: HttpClient, private val appVersion: AppVersion) {
-    suspend fun getGlobalConfigInfo(): ApiResponse<GlobalAppConfigResponse> = httpClient.get(ApiEndPoints.globalConfig) {
-        url {
-            parameters.append("app_version_code", appVersion.code())
-        }
+  suspend fun getGlobalConfigInfo(): ApiResponse<GlobalAppConfigResponse> =
+    httpClient.get(ApiEndPoints.globalConfig) {
+      url {
+        parameters.append("app_version_code", appVersion.code())
+      }
     }.body()
 }

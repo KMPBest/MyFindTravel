@@ -6,9 +6,10 @@ import org.koin.dsl.module
 import screens.home.HomeUiStateHolder
 import screens.topFlights.TopFlightsUiStateHolder
 
-val screenModule = module {
+val screenModule =
+  module {
     factoryOf(::RootUiStateHolder)
     factoryOf(::HomeUiStateHolder)
     factoryOf(::TopFlightsUiStateHolder)
 //    factoryOf()
-}
+  }

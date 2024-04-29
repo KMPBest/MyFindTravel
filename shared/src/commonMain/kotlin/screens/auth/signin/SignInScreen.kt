@@ -42,142 +42,148 @@ import utils.logging.AppLogger
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun SigInScreen(
-    modifier: Modifier = Modifier,
-    onNavigatePrivacyPolicy: () -> Unit,
-    onNavigateTermsConditions: () -> Unit
-){
-    val scrollState = rememberScrollState()
-    LaunchedEffect(true){
-        scrollState.animateScrollTo(scrollState.maxValue, tween(500))
-    }
-    val systemBarPaddingValues = WindowInsets.systemBars.asPaddingValues()
-    val snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
+  modifier: Modifier = Modifier,
+  onNavigatePrivacyPolicy: () -> Unit,
+  onNavigateTermsConditions: () -> Unit,
+) {
+  val scrollState = rememberScrollState()
+  LaunchedEffect(true) {
+    scrollState.animateScrollTo(scrollState.maxValue, tween(500))
+  }
+  val systemBarPaddingValues = WindowInsets.systemBars.asPaddingValues()
+  val snackbarHostState = remember { SnackbarHostState() }
+  val coroutineScope = rememberCoroutineScope()
 
-    Scaffold (
-        modifier = modifier.fillMaxSize(),
-        contentWindowInsets = WindowInsets(
-            top = systemBarPaddingValues.calculateTopPadding(),
-        ),
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        }
+  Scaffold(
+    modifier = modifier.fillMaxSize(),
+    contentWindowInsets =
+      WindowInsets(
+        top = systemBarPaddingValues.calculateTopPadding(),
+      ),
+    snackbarHost = {
+      SnackbarHost(hostState = snackbarHostState)
+    },
+  ) {
+    Column(
+      Modifier
+        .fillMaxSize()
+        .padding(
+          start = 30.dp,
+          end = 30.dp,
+          top = systemBarPaddingValues.calculateTopPadding() + 30.dp,
+          bottom = 30.dp,
+        )
+        .verticalScroll(scrollState),
+      horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Column (
-            Modifier
-                .fillMaxSize()
-                .padding(
-                    start = 30.dp,
-                    end = 30.dp,
-                    top = systemBarPaddingValues.calculateTopPadding() + 30.dp,
-                    bottom = 30.dp
-                )
-                .verticalScroll(scrollState),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = painterResource("drawable/ic_logo.xml"),
-                contentDescription = null,
-                modifier = Modifier.padding(top = 4.dp).size(140.dp)
-            )
+      Image(
+        painter = painterResource("drawable/ic_logo.xml"),
+        contentDescription = null,
+        modifier = Modifier.padding(top = 4.dp).size(140.dp),
+      )
 
-            TitleText( modifier = Modifier.padding(top = 20.dp))
+      TitleText(modifier = Modifier.padding(top = 20.dp))
 
-            AuthUiHelperButtonsAndFirebaseAuth(
-                modifier = Modifier.padding(top = 32.dp).fillMaxWidth(),
-                onFirebaseResult = {resutl ->
-                    resutl.onSuccess {
-                        AppLogger.d("Successful sign in")
-                    }.onFailure {
-                        coroutineScope.launch { snackbarHostState.showSnackbar(it.message ?: "") }
-                        AppLogger.e("Error occurred while signing in, $it")
-                    }
-                }
-            )
-            AgreePrivacyPolicyTermsConditionsText(
-                modifier = Modifier.padding(top = 32.dp).fillMaxWidth(),
-                onClickPrivacyPolicy = onNavigatePrivacyPolicy,
-                onClickTermsService = onNavigateTermsConditions
-            )
-        }
+      AuthUiHelperButtonsAndFirebaseAuth(
+        modifier = Modifier.padding(top = 32.dp).fillMaxWidth(),
+        onFirebaseResult = { resutl ->
+          resutl.onSuccess {
+            AppLogger.d("Successful sign in")
+          }.onFailure {
+            coroutineScope.launch { snackbarHostState.showSnackbar(it.message ?: "") }
+            AppLogger.e("Error occurred while signing in, $it")
+          }
+        },
+      )
+      AgreePrivacyPolicyTermsConditionsText(
+        modifier = Modifier.padding(top = 32.dp).fillMaxWidth(),
+        onClickPrivacyPolicy = onNavigatePrivacyPolicy,
+        onClickTermsService = onNavigateTermsConditions,
+      )
     }
+  }
 }
 
 @Composable
-private fun TitleText(modifier: Modifier){
-    val annotationString = buildAnnotatedString {
-        append("Sign in")
-        appendLine()
-        withStyle(
-            style = SpanStyle(color = MaterialTheme.colorScheme.secondary)
-        ){
-            append("Your travel plan");
-        }
+private fun TitleText(modifier: Modifier) {
+  val annotationString =
+    buildAnnotatedString {
+      append("Sign in")
+      appendLine()
+      withStyle(
+        style = SpanStyle(color = MaterialTheme.colorScheme.secondary),
+      ) {
+        append("Your travel plan")
+      }
     }
 
-    Text(
-        modifier = modifier,
-        text = annotationString,
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.displayMedium.copy(color = Color.Black)
-    )
+  Text(
+    modifier = modifier,
+    text = annotationString,
+    textAlign = TextAlign.Center,
+    style = MaterialTheme.typography.displayMedium.copy(color = Color.Black),
+  )
 }
 
 @Composable
 private fun AgreePrivacyPolicyTermsConditionsText(
-    modifier: Modifier,
-    onClickPrivacyPolicy: () -> Unit,
-    onClickTermsService: () -> Unit
-){
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        val privacyPolicy = "Privacy Policy"
-        val termsConditions = "Terms & Conditions"
-        val annotatedString = buildAnnotatedString {
-            append("By continuing, I agree to the")
-            withStyle(
-                style = SpanStyle(
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.secondary,
-                    textDecoration = TextDecoration.Underline
-                )
-            ){
-                pushStringAnnotation(
-                    tag = privacyPolicy,
-                    annotation = privacyPolicy
-                )
-                append(privacyPolicy)
-            }
-            append("and")
-            withStyle(
-                style = SpanStyle(
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.secondary,
-                    textDecoration = TextDecoration.Underline
-                )
-            ){
-                pushStringAnnotation(
-                    tag = termsConditions,
-                    annotation = termsConditions
-                )
-                append(termsConditions)
-            }
+  modifier: Modifier,
+  onClickPrivacyPolicy: () -> Unit,
+  onClickTermsService: () -> Unit,
+) {
+  Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+    val privacyPolicy = "Privacy Policy"
+    val termsConditions = "Terms & Conditions"
+    val annotatedString =
+      buildAnnotatedString {
+        append("By continuing, I agree to the")
+        withStyle(
+          style =
+            SpanStyle(
+              fontWeight = FontWeight.SemiBold,
+              color = MaterialTheme.colorScheme.secondary,
+              textDecoration = TextDecoration.Underline,
+            ),
+        ) {
+          pushStringAnnotation(
+            tag = privacyPolicy,
+            annotation = privacyPolicy,
+          )
+          append(privacyPolicy)
         }
+        append("and")
+        withStyle(
+          style =
+            SpanStyle(
+              fontWeight = FontWeight.SemiBold,
+              color = MaterialTheme.colorScheme.secondary,
+              textDecoration = TextDecoration.Underline,
+            ),
+        ) {
+          pushStringAnnotation(
+            tag = termsConditions,
+            annotation = termsConditions,
+          )
+          append(termsConditions)
+        }
+      }
 
-        ClickableText(
-            text = annotatedString,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                color = Color.Black,
-                fontWeight = FontWeight.Medium
-            )
-        ){
-            offset ->
-            annotatedString.getStringAnnotations(offset, offset)
-                .firstOrNull()?.let { span ->
-                    when (span.item){
-                        privacyPolicy -> onClickPrivacyPolicy()
-                        termsConditions -> onClickTermsService()
-                    }
-                }
+    ClickableText(
+      text = annotatedString,
+      style =
+        MaterialTheme.typography.bodyMedium.copy(
+          color = Color.Black,
+          fontWeight = FontWeight.Medium,
+        ),
+    ) {
+        offset ->
+      annotatedString.getStringAnnotations(offset, offset)
+        .firstOrNull()?.let { span ->
+          when (span.item) {
+            privacyPolicy -> onClickPrivacyPolicy()
+            termsConditions -> onClickTermsService()
+          }
         }
     }
+  }
 }

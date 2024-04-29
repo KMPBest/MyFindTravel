@@ -6,4 +6,4 @@ import screens.di.screenModule
 
 internal expect val platformModule: Module
 val appModules: List<Module>
-    get() = platformModule + dataModule + screenModule
+  get() = platformModule + dataModule + screenModule

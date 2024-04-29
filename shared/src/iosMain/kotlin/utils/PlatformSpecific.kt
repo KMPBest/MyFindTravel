@@ -16,28 +16,32 @@ private val cache: MutableMap<String, Font> = mutableMapOf()
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-actual fun font(res: String, weight: FontWeight, style: FontStyle): Font {
-    return cache.getOrPut(res) {
-        val byteArray = runBlocking {
-            resource("font/$res.ttf").readBytes()
-        }
-        androidx.compose.ui.text.platform.Font(res, byteArray, weight, style)
-    }
+actual fun font(
+  res: String,
+  weight: FontWeight,
+  style: FontStyle,
+): Font {
+  return cache.getOrPut(res) {
+    val byteArray =
+      runBlocking {
+        resource("font/$res.ttf").readBytes()
+      }
+    androidx.compose.ui.text.platform.Font(res, byteArray, weight, style)
+  }
 }
 
 @Composable
 actual fun <T> StateFlow<T>.asState(): State<T> = collectAsState()
 
 internal class IosAppVersion : AppVersion {
-    override fun code(): String =
-        kotlin.runCatching { getInfoDictionary()?.get("CFBundleVersion") as? String ?: "" }
-            .getOrDefault("")
+  override fun code(): String =
+    kotlin.runCatching { getInfoDictionary()?.get("CFBundleVersion") as? String ?: "" }
+      .getOrDefault("")
 
-    override fun name(): String =
-        kotlin.runCatching {
-            getInfoDictionary()?.get("CFBundleShortVersionString") as? String ?: ""
-        }.getOrDefault("")
+  override fun name(): String =
+    kotlin.runCatching {
+      getInfoDictionary()?.get("CFBundleShortVersionString") as? String ?: ""
+    }.getOrDefault("")
 
-    private fun getInfoDictionary() = NSBundle.mainBundle.infoDictionary
-
+  private fun getInfoDictionary() = NSBundle.mainBundle.infoDictionary
 }

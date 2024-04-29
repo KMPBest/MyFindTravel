@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.ScreenModelStore
 import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.Screen
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -16,29 +15,29 @@ import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import org.koin.mp.KoinPlatform.getKoin
 
-abstract class UiStateHolder: ScreenModel {
+abstract class UiStateHolder : ScreenModel {
+  protected open fun onCleared() {}
 
-    protected open fun onCleared() {}
-
-    override fun onDispose() {
-        super.onDispose()
-        onCleared()
-    }
+  override fun onDispose() {
+    super.onDispose()
+    onCleared()
+  }
 }
 
 val UiStateHolder.uiStateHolderScope: CoroutineScope
-    get() = ScreenModelStore.getOrPutDependency(
-        screenModel = this,
-        name = "ScreenModelCoroutineScope",
-        factory = { key -> CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate) + CoroutineName(key) },
-        onDispose = { scope -> scope.cancel() }
+  get() =
+    ScreenModelStore.getOrPutDependency(
+      screenModel = this,
+      name = "ScreenModelCoroutineScope",
+      factory = { key -> CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate) + CoroutineName(key) },
+      onDispose = { scope -> scope.cancel() },
     )
 
 @Composable
 inline fun <reified T : UiStateHolder> Screen.getUiStateHolder(
-    qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null,
+  qualifier: Qualifier? = null,
+  noinline parameters: ParametersDefinition? = null,
 ): T {
-    val koin = getKoin()
-    return rememberScreenModel(tag = qualifier?.value) { koin.get(qualifier, parameters) }
+  val koin = getKoin()
+  return rememberScreenModel(tag = qualifier?.value) { koin.get(qualifier, parameters) }
 }

@@ -5,20 +5,21 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val LightColorScheme = lightColorScheme(
+private val LightColorScheme =
+  lightColorScheme(
     background = Color.White,
     secondary = Orange,
     onSecondary = Color.White,
-    secondaryContainer= Orange_alpha_5,
+    secondaryContainer = Orange_alpha_5,
     primary = Yellow,
     onPrimary = Color.Black,
-)
+  )
 
 @Composable
-fun MyAppTheme(content: @Composable () -> Unit){
-    MaterialTheme(
-        colorScheme = LightColorScheme,
-        typography = Typography,
-        content = content
-    )
+fun MyAppTheme(content: @Composable () -> Unit) {
+  MaterialTheme(
+    colorScheme = LightColorScheme,
+    typography = Typography,
+    content = content,
+  )
 }

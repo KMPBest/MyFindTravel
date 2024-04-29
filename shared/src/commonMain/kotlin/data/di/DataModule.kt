@@ -7,13 +7,11 @@ import data.source.remote.apiService.FlightsApiService
 import data.source.remote.apiService.GlobalApiService
 import data.source.remote.apiService.UserApiService
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.HttpSend
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.plugins.plugin
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
@@ -25,56 +23,57 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import kotlin.coroutines.CoroutineContext
 import secrets.BuildConfig
 import utils.logging.AppLogger
+import kotlin.coroutines.CoroutineContext
 
-private val remoteSourceModule = module {
+private val remoteSourceModule =
+  module {
     single {
-        HttpClient() {
-            defaultRequest {
-                url {
-                    protocol = URLProtocol.HTTPS
-                    host = "api.findtravelnow.com"
-                    parameters.append("api_key", BuildConfig.API_KEY)
-                }
-                header(HttpHeaders.ContentType,"application/json")
+      HttpClient {
+        defaultRequest {
+          url {
+            protocol = URLProtocol.HTTPS
+            host = "api.findtravelnow.com"
+            parameters.append("api_key", BuildConfig.API_KEY)
+          }
+          header(HttpHeaders.ContentType, "application/json")
+        }
+        install(Logging) {
+          logger =
+            object : Logger {
+              override fun log(message: String) {
+                AppLogger.d("NetworkRequest: $message")
+              }
             }
-            install(Logging) {
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        AppLogger.d("NetworkRequest: $message")
-                    }
-                }
-                level = LogLevel.ALL
-            }
-            install(ContentNegotiation) {
-                json(Json { ignoreUnknownKeys=true })
-            }
-        }.also {
+          level = LogLevel.ALL
+        }
+        install(ContentNegotiation) {
+          json(Json { ignoreUnknownKeys = true })
+        }
+      }.also {
 //            it.plugin(HttpSend).intercept { request ->
 //                val firebaseUserIdToken = Firebase.auth.currentUser?.getIdToken(true)
 //                request.header("Authorization", firebaseUserIdToken)
 //                execute(request)
 //            }
-
-        }
+      }
     }
     factoryOf(::GlobalApiService)
     factoryOf(::FlightsApiService)
     factoryOf(::UserApiService)
-}
+  }
 
-
-private val repositoryModule = module {
+private val repositoryModule =
+  module {
 
     factory { Dispatchers.IO } bind CoroutineContext::class
     factoryOf(::GlobalAppRepository)
     factoryOf(::FlightsRepository)
     singleOf(::UserRepository)
-}
+  }
 
-val dataModule = module {
+val dataModule =
+  module {
     includes(repositoryModule, remoteSourceModule)
-}
-
+  }

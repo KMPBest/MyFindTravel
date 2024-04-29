@@ -9,7 +9,8 @@ import utils.AppOpenerUtil
 import utils.AppOpenerUtilImpl
 import utils.AppVersion
 
-internal actual val platformModule: Module = module {
+internal actual val platformModule: Module =
+  module {
     factoryOf(::AppOpenerUtilImpl) bind AppOpenerUtil::class
     factoryOf(::AndroidAppVersion) bind AppVersion::class
-}
+  }

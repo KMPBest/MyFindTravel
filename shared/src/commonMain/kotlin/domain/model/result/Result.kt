@@ -5,35 +5,35 @@ package domain.model.result
  * or an error result containing an errorEntity of type [ErrorEntity]
  */
 sealed interface Result<out T> {
+  /**
+   * A class represents that result returned successfully.
+   *
+   * @property data a [T] object that contains success outcome
+   */
+  data class Success<T>(val data: T) : Result<T>
 
+  /**
+   * A class represents that some error happened while returning result.
+   *
+   * @property errorEntity an [ErrorEntity] object that contains error states.
+   * @see ErrorEntity for different types of errors.
+   */
+  data class Error(val errorEntity: ErrorEntity? = null) : Result<Nothing>
+
+  /**
+   * Companion object for [Result] class that contains empty [Result.Success] object.
+   */
+  companion object {
     /**
-     * A class represents that result returned successfully.
-     *
-     * @property data a [T] object that contains success outcome
+     * Success result with an empty value. This can be used if you need to return
+     * success result from a function but without any data.
      */
-    data class Success<T>(val data: T) : Result<T>
+    val EMPTY = Success(Unit)
 
-    /**
-     * A class represents that some error happened while returning result.
-     *
-     * @property errorEntity an [ErrorEntity] object that contains error states.
-     * @see ErrorEntity for different types of errors.
-     */
-    data class Error(val errorEntity: ErrorEntity? = null) : Result<Nothing>
+    fun <T> success(data: T): Result<T> = Success(data)
 
-    /**
-     * Companion object for [Result] class that contains empty [Result.Success] object.
-     */
-    companion object {
-        /**
-         * Success result with an empty value. This can be used if you need to return
-         * success result from a function but without any data.
-         */
-        val EMPTY = Success(Unit)
-
-        fun <T> success(data: T): Result<T> = Success(data)
-        fun error(errorEntity: ErrorEntity? = null): Error = Error(errorEntity)
-    }
+    fun error(errorEntity: ErrorEntity? = null): Error = Error(errorEntity)
+  }
 }
 
 /**
@@ -52,8 +52,8 @@ sealed interface Result<out T> {
  *   .onError { error-> }`
  */
 inline fun <T : Any?> Result<T>.onSuccess(action: (T) -> Unit): Result<T> {
-    if (this is Result.Success) action(data)
-    return this
+  if (this is Result.Success) action(data)
+  return this
 }
 
 /**
@@ -63,13 +63,13 @@ inline fun <T : Any?> Result<T>.onSuccess(action: (T) -> Unit): Result<T> {
  * @return same result object
  */
 inline fun <T : Any?> Result<T>.onError(action: (errorEntity: ErrorEntity?) -> Unit): Result<T> {
-    if (this is Result.Error) action(errorEntity)
-    return this
+  if (this is Result.Error) action(errorEntity)
+  return this
 }
 
 inline fun <T : Any?, R> Result<T>.mapDataOnSuccess(transform: (T) -> R): Result<R> {
-    return when (this) {
-        is Result.Error -> this
-        is Result.Success -> Result.success(transform(data))
-    }
+  return when (this) {
+    is Result.Error -> this
+    is Result.Success -> Result.success(transform(data))
+  }
 }

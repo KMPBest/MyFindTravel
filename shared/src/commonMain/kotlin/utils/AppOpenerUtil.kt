@@ -1,9 +1,9 @@
 package utils
 
 interface AppOpenerUtil {
-    fun openStorePage()
+  fun openStorePage()
 
-    fun shareApp()
+  fun shareApp()
 
-    fun openFeedbackMail()
+  fun openFeedbackMail()
 }

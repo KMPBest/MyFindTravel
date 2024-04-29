@@ -1,154 +1,152 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.kotlinNativeCocoapods)
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.compose)
+  alias(libs.plugins.kotlin.multiplatform)
+  alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.kotlinNativeCocoapods)
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.compose)
 }
 
 kotlin {
-    androidTarget()
+  androidTarget()
 
 //    jvm("desktop")
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "shared"
-            isStatic = true
-        }
+  listOf(
+    iosX64(),
+    iosArm64(),
+    iosSimulatorArm64(),
+  ).forEach { iosTarget ->
+    iosTarget.binaries.framework {
+      baseName = "shared"
+      isStatic = true
     }
+  }
 
-    cocoapods {
-        ios.deploymentTarget = "14.1"
-        version = "1.0.0"
-        summary = "Shared module of FindTravelNow"
-        homepage = "https://github.com/KmmBest/MyFindTravel"
-        framework {
-            baseName = "shared"
-            isStatic = true
+  cocoapods {
+    ios.deploymentTarget = "14.1"
+    version = "1.0.0"
+    summary = "Shared module of FindTravelNow"
+    homepage = "https://github.com/KmmBest/MyFindTravel"
+    framework {
+      baseName = "shared"
+      isStatic = true
 //            export(libs.kmpNotifier)
-        }
     }
+  }
 
-
-    //Generating BuildConfig for multiplatform
-    val buildConfigGenerator by tasks.registering(Sync::class) {
-        val packageName = "secrets"
-        val secretProperties = readPropertiesFromFile("secrets.properties")
-        from(
-            resources.text.fromString(
-                """
+  // Generating BuildConfig for multiplatform
+  val buildConfigGenerator by tasks.registering(Sync::class) {
+    val packageName = "secrets"
+    val secretProperties = readPropertiesFromFile("secrets.properties")
+    from(
+      resources.text.fromString(
+        """
         |package $packageName
         |
         |object BuildConfig {
         |  const val API_KEY = "${secretProperties.getPropertyValue("API_KEY")}"
         |}
         |
-      """.trimMargin()
-            )
-        )
-        {
-            rename { "BuildConfig.kt" } // set the file name
-            into(packageName) // change the directory to match the package
-        }
-        into(layout.buildDirectory.dir("generated-src/kotlin/"))
+        """.trimMargin(),
+      ),
+    ) {
+      rename { "BuildConfig.kt" } // set the file name
+      into(packageName) // change the directory to match the package
     }
+    into(layout.buildDirectory.dir("generated-src/kotlin/"))
+  }
 
-    val ktorVersion = "2.3.7"
-    val coroutinesVersion = "1.7.3"
-    val voyagerVersion = "1.0.0"
-    val koinVersion = "3.5.3"
-    val napierVersion = "2.7.1"
+  val ktorVersion = "2.3.7"
+  val coroutinesVersion = "1.7.3"
+  val voyagerVersion = "1.0.0"
+  val koinVersion = "3.5.3"
+  val napierVersion = "2.7.1"
 
-    sourceSets {
-        val commonMain by getting {
-            kotlin.srcDir(
-                // convert the task to a file-provider
-                buildConfigGenerator.map { it.destinationDir }
-            )
-            dependencies {
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material)
-                implementation(compose.material3)
+  sourceSets {
+    val commonMain by getting {
+      kotlin.srcDir(
+        // convert the task to a file-provider
+        buildConfigGenerator.map { it.destinationDir },
+      )
+      dependencies {
+        implementation(compose.runtime)
+        implementation(compose.foundation)
+        implementation(compose.material)
+        implementation(compose.material3)
 
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.components.resources)
+        @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+        implementation(compose.components.resources)
 
-                implementation(libs.bundles.koin)
-                implementation(libs.bundles.voyager)
-                implementation(libs.bundles.ktor)
-                implementation(libs.multiplatformSettings.noargs)
-                implementation(libs.kotlinx.serialization)
-                implementation(libs.kotlinx.datetime)
-                implementation(libs.napier)
+        implementation(libs.bundles.koin)
+        implementation(libs.bundles.voyager)
+        implementation(libs.bundles.ktor)
+        implementation(libs.multiplatformSettings.noargs)
+        implementation(libs.kotlinx.serialization)
+        implementation(libs.kotlinx.datetime)
+        implementation(libs.napier)
 //                api(libs.kmpNotifier)
-                implementation(libs.kmpAuth.firebase)
-                implementation(libs.kmpAuth.uihelper)
-                implementation(libs.kmpAuth.google)
+        implementation(libs.kmpAuth.firebase)
+        implementation(libs.kmpAuth.uihelper)
+        implementation(libs.kmpAuth.google)
 
-                implementation(libs.coil.compose)
-                implementation(libs.coil.ktor)
+        implementation(libs.coil.compose)
+        implementation(libs.coil.ktor)
 
-                implementation(libs.kmprevenuecat.purchases)
-                implementation(libs.kmprevenuecat.purchases.ui)
-            }
-        }
-        val androidMain by getting {
-            dependencies {
-                api(libs.androidx.activity.compose)
-                api(libs.androidx.appcompat)
-                api(libs.androidx.core)
-                api(libs.androidx.lifecycle.runtime.compose)
-                api(libs.koin.android)
-
-                //Firebase
-                api(project.dependencies.platform(libs.firebase.bom))
-                api(libs.firebase.analytics)
-                api(libs.firebase.crashlytics)
-                api(libs.firebase.messaging)
-            }
-        }
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            resources.srcDirs("src/commonMain/resources","src/iosMain/resources")
-
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
-
-            dependencies {
-                implementation(libs.ktor.client.darwin)
-            }
-        }
+        implementation(libs.kmprevenuecat.purchases)
+        implementation(libs.kmprevenuecat.purchases.ui)
+      }
     }
+    val androidMain by getting {
+      dependencies {
+        api(libs.androidx.activity.compose)
+        api(libs.androidx.appcompat)
+        api(libs.androidx.core)
+        api(libs.androidx.lifecycle.runtime.compose)
+        api(libs.koin.android)
+
+        // Firebase
+        api(project.dependencies.platform(libs.firebase.bom))
+        api(libs.firebase.analytics)
+        api(libs.firebase.crashlytics)
+        api(libs.firebase.messaging)
+      }
+    }
+    val iosX64Main by getting
+    val iosArm64Main by getting
+    val iosSimulatorArm64Main by getting
+    val iosMain by creating {
+      resources.srcDirs("src/commonMain/resources", "src/iosMain/resources")
+
+      dependsOn(commonMain)
+      iosX64Main.dependsOn(this)
+      iosArm64Main.dependsOn(this)
+      iosSimulatorArm64Main.dependsOn(this)
+
+      dependencies {
+        implementation(libs.ktor.client.darwin)
+      }
+    }
+  }
 }
 
 android {
-    compileSdk = (findProperty("android.compileSdk") as String).toInt()
-    namespace = "com.myapplication.common"
+  compileSdk = (findProperty("android.compileSdk") as String).toInt()
+  namespace = "com.myapplication.common"
 
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res", "src/commonMain/resources")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+  sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+  sourceSets["main"].res.srcDirs("src/androidMain/res", "src/commonMain/resources")
+  sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
-    defaultConfig {
-        minSdk = (findProperty("android.minSdk") as String).toInt()
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlin {
-        jvmToolchain(17)
-    }
+  defaultConfig {
+    minSdk = (findProperty("android.minSdk") as String).toInt()
+  }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
+  kotlin {
+    jvmToolchain(17)
+  }
 }
 
 /**
@@ -162,38 +160,40 @@ android {
  * key2=value2
  */
 fun readPropertiesFromFile(fileName: String): Map<String, String> {
-    val parts = fileName.split('.')
-    val localPropertyFileName = if (parts.size >= 2) {
-        val nameWithoutExtension = parts.dropLast(1).joinToString(".")
-        val extension = parts.last()
-        "$nameWithoutExtension.local.$extension"
+  val parts = fileName.split('.')
+  val localPropertyFileName =
+    if (parts.size >= 2) {
+      val nameWithoutExtension = parts.dropLast(1).joinToString(".")
+      val extension = parts.last()
+      "$nameWithoutExtension.local.$extension"
     } else {
-        fileName
+      fileName
     }
-    val isLocalFileExists= File(project.rootDir,localPropertyFileName).exists()
-    val fileContent = try {
-        File(project.rootDir,if (isLocalFileExists) localPropertyFileName else fileName).readText()
+  val isLocalFileExists = File(project.rootDir, localPropertyFileName).exists()
+  val fileContent =
+    try {
+      File(project.rootDir, if (isLocalFileExists) localPropertyFileName else fileName).readText()
     } catch (e: Exception) {
-        e.printStackTrace()
-        return emptyMap()
+      e.printStackTrace()
+      return emptyMap()
     }
 
-    val properties = mutableMapOf<String, String>()
+  val properties = mutableMapOf<String, String>()
 
-    fileContent.lines().forEach { line ->
-        val keyValuePair = line.split('=')
-        if (keyValuePair.size == 2) {
-            properties[keyValuePair[0].trim()] = keyValuePair[1]
-        }
+  fileContent.lines().forEach { line ->
+    val keyValuePair = line.split('=')
+    if (keyValuePair.size == 2) {
+      properties[keyValuePair[0].trim()] = keyValuePair[1]
     }
-    return properties
+  }
+  return properties
 }
 
 /**
  * If System.env value exists it will be returned value which can be useful for CI/CD pipeline
  */
 fun Map<String, String>.getPropertyValue(key: String): String? {
-    val envValue = System.getenv(key)
-    if (envValue.isNullOrEmpty().not()) return envValue
-    return this.getOrDefault(key, null)
+  val envValue = System.getenv(key)
+  if (envValue.isNullOrEmpty().not()) return envValue
+  return this.getOrDefault(key, null)
 }

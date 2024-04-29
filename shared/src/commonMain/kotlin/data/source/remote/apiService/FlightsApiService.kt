@@ -7,18 +7,17 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 
 class FlightsApiService(private val httpClient: HttpClient) {
-    suspend fun getTop5Flights(
-        origin: String?,
-        maxPrice: String,
-        sortBy: String,
-    ): ApiResponse<TopFlightPricesResponse> = httpClient.get(ApiEndPoints.top5Flights) {
-        url {
-            parameters.append("sort", sortBy)
-            origin?.let { parameters.append("origin", origin) }
+  suspend fun getTop5Flights(
+    origin: String?,
+    maxPrice: String,
+    sortBy: String,
+  ): ApiResponse<TopFlightPricesResponse> =
+    httpClient.get(ApiEndPoints.top5Flights) {
+      url {
+        parameters.append("sort", sortBy)
+        origin?.let { parameters.append("origin", origin) }
 
-            parameters.append("maxPrice", maxPrice)
-        }
+        parameters.append("maxPrice", maxPrice)
+      }
     }.body()
-
-
 }

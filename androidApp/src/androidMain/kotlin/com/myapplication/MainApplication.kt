@@ -1,14 +1,15 @@
 package com.myapplication
 
 import android.app.Application
-import root.AppInitializer
 import org.koin.android.ext.koin.androidContext
+import root.AppInitializer
 
-class MainApplication: Application() {
-    override fun onCreate() {
-        super.onCreate()
+class MainApplication : Application() {
+  override fun onCreate() {
+    super.onCreate()
 
-        AppInitializer.initialize(isDebug = true) {
-            androidContext(this@MainApplication)
-        }
-    }}
+    AppInitializer.initialize(isDebug = true) {
+      androidContext(this@MainApplication)
+    }
+  }
+}

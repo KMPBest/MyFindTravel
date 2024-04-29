@@ -8,57 +8,51 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import components.more.MoreItem
 import configs.uis.Strings
-import navigation.IScreens
-import navigation.navigate
 import org.koin.compose.koinInject
-import screens.home.CategoryData
 import utils.AppOpenerUtil
 
 @Composable
 fun MoreScreen(
-    onNavigateAboutUs: () -> Unit,
-    onNavigatePrivacy: () -> Unit,
-    onNavigateTerms: () -> Unit,
-    ) {
-    val uiState by remember { mutableStateOf(MoreScreenUiState()) }
-    val appOpenerUtil = koinInject<AppOpenerUtil>()
+  onNavigateAboutUs: () -> Unit,
+  onNavigatePrivacy: () -> Unit,
+  onNavigateTerms: () -> Unit,
+) {
+  val uiState by remember { mutableStateOf(MoreScreenUiState()) }
+  val appOpenerUtil = koinInject<AppOpenerUtil>()
 
-    val systemBarPaddingValues = WindowInsets.systemBars.asPaddingValues()
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
-            .padding(
-                start = 30.dp,
-                end = 30.dp,
-                top = 40.dp
-            ),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        items(uiState.items, key = {it}) {
-            MoreItem(
-                value = it,
-                onClick = {
-                    when (it){
-                        Strings.feedback -> appOpenerUtil.openFeedbackMail()
-                        Strings.share_app -> appOpenerUtil.shareApp()
-                        Strings.rate_app -> appOpenerUtil.openStorePage()
-                        Strings.about_us -> onNavigateAboutUs()
-                        Strings.privacy_policy -> onNavigatePrivacy()
-                        Strings.terms_conditions -> onNavigateTerms()
-                    }
-                }
-            )
-        }
+  val systemBarPaddingValues = WindowInsets.systemBars.asPaddingValues()
+  LazyColumn(
+    modifier =
+      Modifier.fillMaxSize()
+        .padding(
+          start = 30.dp,
+          end = 30.dp,
+          top = 40.dp,
+        ),
+    verticalArrangement = Arrangement.spacedBy(12.dp),
+  ) {
+    items(uiState.items, key = { it }) {
+      MoreItem(
+        value = it,
+        onClick = {
+          when (it) {
+            Strings.feedback -> appOpenerUtil.openFeedbackMail()
+            Strings.share_app -> appOpenerUtil.shareApp()
+            Strings.rate_app -> appOpenerUtil.openStorePage()
+            Strings.about_us -> onNavigateAboutUs()
+            Strings.privacy_policy -> onNavigatePrivacy()
+            Strings.terms_conditions -> onNavigateTerms()
+          }
+        },
+      )
     }
-
+  }
 }

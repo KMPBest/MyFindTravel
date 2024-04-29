@@ -7,6 +7,5 @@ import io.ktor.client.call.body
 import io.ktor.client.request.post
 
 class UserApiService(private val httpClient: HttpClient) {
-    suspend fun createOrGetUser(): ApiResponse<UserResponse> =
-        httpClient.post(ApiEndPoints.users).body()
+  suspend fun createOrGetUser(): ApiResponse<UserResponse> = httpClient.post(ApiEndPoints.users).body()
 }

@@ -8,16 +8,16 @@ import navigation.RootUiStateHolder
 import utils.getUiStateHolder
 
 interface INavigatioinContainer {
-    object Main: Screen, INavigatioinContainer {
-        @Composable
-        override fun Content() {
-            val rootScreenMainUiStateHolder = getUiStateHolder<RootUiStateHolder> ()
-        RootNavigation(uiStateHolder = rootScreenMainUiStateHolder)
-        }
+  object Main : Screen, INavigatioinContainer {
+    @Composable
+    override fun Content() {
+      val rootScreenMainUiStateHolder = getUiStateHolder<RootUiStateHolder>()
+      RootNavigation(uiStateHolder = rootScreenMainUiStateHolder)
     }
+  }
 }
 
 @Composable
-fun NavigationContainer(startScreen: INavigatioinContainer){
-    Navigator(screen = startScreen as Screen)
+fun NavigationContainer(startScreen: INavigatioinContainer) {
+  Navigator(screen = startScreen as Screen)
 }

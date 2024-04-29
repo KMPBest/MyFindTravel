@@ -23,42 +23,42 @@ import domain.model.AuthProvider
 
 @Composable
 fun AuthUiHelperButtonsAndFirebaseAuth(
-    modifier: Modifier = Modifier,
-    authProviders: List<AuthProvider>  = AuthProvider.values().asList(),
-    onFirebaseResult: (Result<FirebaseUser?>) -> Unit
-){
-    val isExistOnlyOneAuthProvider by remember { mutableStateOf(authProviders.size == 1) }
+  modifier: Modifier = Modifier,
+  authProviders: List<AuthProvider> = AuthProvider.values().asList(),
+  onFirebaseResult: (Result<FirebaseUser?>) -> Unit,
+) {
+  val isExistOnlyOneAuthProvider by remember { mutableStateOf(authProviders.size == 1) }
 
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(14.dp)
-    ) {
-        val shape = RoundedCornerShape(8.dp)
-        val height = 56.dp
-        val textFontSize = 24.sp
+  Column(
+    modifier = modifier,
+    verticalArrangement = Arrangement.spacedBy(14.dp),
+  ) {
+    val shape = RoundedCornerShape(8.dp)
+    val height = 56.dp
+    val textFontSize = 24.sp
 
-        if(authProviders.contains(AuthProvider.GOOGLE)){
-            GoogleButtonUiContainerFirebase(onResult = onFirebaseResult) {
-                LaunchedEffect(Unit) { if(isExistOnlyOneAuthProvider) this@GoogleButtonUiContainerFirebase.onClick()}
-                GoogleSignInButton(
-                    modifier = Modifier.fillMaxWidth().height(height),
-                    text = "Sign in with Google",
-                    mode = GoogleButtonMode.Light,
-                    fontSize = textFontSize,
-                    shape = shape
-                ){ this.onClick() }
-            }
-        }
-
-        if(authProviders.contains(AuthProvider.APPLE)){
-            AppleButtonUiContainer(onResult = onFirebaseResult){
-                LaunchedEffect(Unit) {if (isExistOnlyOneAuthProvider) this@AppleButtonUiContainer.onClick()}
-                AppleSignInButton(
-                    modifier = Modifier.fillMaxWidth().height(height),
-                    text = "Sign in with Apple",
-                    shape = shape
-                ){ this.onClick() }
-            }
-        }
+    if (authProviders.contains(AuthProvider.GOOGLE)) {
+      GoogleButtonUiContainerFirebase(onResult = onFirebaseResult) {
+        LaunchedEffect(Unit) { if (isExistOnlyOneAuthProvider) this@GoogleButtonUiContainerFirebase.onClick() }
+        GoogleSignInButton(
+          modifier = Modifier.fillMaxWidth().height(height),
+          text = "Sign in with Google",
+          mode = GoogleButtonMode.Light,
+          fontSize = textFontSize,
+          shape = shape,
+        ) { this.onClick() }
+      }
     }
+
+    if (authProviders.contains(AuthProvider.APPLE)) {
+      AppleButtonUiContainer(onResult = onFirebaseResult) {
+        LaunchedEffect(Unit) { if (isExistOnlyOneAuthProvider) this@AppleButtonUiContainer.onClick() }
+        AppleSignInButton(
+          modifier = Modifier.fillMaxWidth().height(height),
+          text = "Sign in with Apple",
+          shape = shape,
+        ) { this.onClick() }
+      }
+    }
+  }
 }

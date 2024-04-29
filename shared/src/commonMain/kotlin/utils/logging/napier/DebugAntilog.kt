@@ -7,6 +7,6 @@ import io.github.aakira.napier.Antilog
  * facade class name from stackTrace for auto tagging
  */
 expect class DebugAntilog(
-    defaultTag: String = "Logger",
-    excludedClassList: List<String> = emptyList(),
+  defaultTag: String = "Logger",
+  excludedClassList: List<String> = emptyList(),
 ) : Antilog

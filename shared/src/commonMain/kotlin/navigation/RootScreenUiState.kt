@@ -1,5 +1,5 @@
 package navigation
 
-data class RootScreenUiState (
-    val isAppVersionUpgradeRequired: Boolean = false
+data class RootScreenUiState(
+  val isAppVersionUpgradeRequired: Boolean = false,
 )

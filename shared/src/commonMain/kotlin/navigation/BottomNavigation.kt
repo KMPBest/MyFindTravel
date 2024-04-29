@@ -11,39 +11,39 @@ import configs.uis.Silver_d8
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
-
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun BottomNavigation(
-    modifer: Modifier = Modifier,
-    selectedNavItem: BottomNavItem,
-    onNavigationItemSeleted: (BottomNavItem) -> Unit
+  modifer: Modifier = Modifier,
+  selectedNavItem: BottomNavItem,
+  onNavigationItemSeleted: (BottomNavItem) -> Unit,
 ) {
-    NavigationBar(
-        containerColor = MaterialTheme.colorScheme.background,
-        modifier = modifer
-    ) {
-        val navItem = BottomNavItem.values()
-        navItem.forEach { item ->
-            val isSelected = item == selectedNavItem
-            val iconTint = if (isSelected) MaterialTheme.colorScheme.secondary else Silver_d8
-            NavigationBarItem(
-                icon = {
-                    Icon(
-                        painter = painterResource(item.iconRes),
-                        contentDescription = item.iconRes,
-                        tint = iconTint
-                    )
-                },
-                selected = isSelected,
-                alwaysShowLabel = false,
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = MaterialTheme.colorScheme.secondary,
-                    indicatorColor = MaterialTheme.colorScheme.background,
-                    unselectedIconColor = Silver_d8
-                ),
-                onClick = { onNavigationItemSeleted(item) }
-            )
-        }
+  NavigationBar(
+    containerColor = MaterialTheme.colorScheme.background,
+    modifier = modifer,
+  ) {
+    val navItem = BottomNavItem.values()
+    navItem.forEach { item ->
+      val isSelected = item == selectedNavItem
+      val iconTint = if (isSelected) MaterialTheme.colorScheme.secondary else Silver_d8
+      NavigationBarItem(
+        icon = {
+          Icon(
+            painter = painterResource(item.iconRes),
+            contentDescription = item.iconRes,
+            tint = iconTint,
+          )
+        },
+        selected = isSelected,
+        alwaysShowLabel = false,
+        colors =
+          NavigationBarItemDefaults.colors(
+            selectedIconColor = MaterialTheme.colorScheme.secondary,
+            indicatorColor = MaterialTheme.colorScheme.background,
+            unselectedIconColor = Silver_d8,
+          ),
+        onClick = { onNavigationItemSeleted(item) },
+      )
     }
+  }
 }
