@@ -156,7 +156,7 @@ interface IScreens {
   data class WebView(val url: String, private val title: String = "") : Screen, IScreens {
     @Composable
     override fun Content() {
-      WebViewScreen(url = url)
+      WebViewScreen(url = url, title = title)
     }
 
     override fun getTitle(): String {

@@ -1,7 +1,6 @@
 package navigation
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.Spring
@@ -20,7 +19,6 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.stack.StackEvent
 import cafe.adriel.voyager.navigator.Navigator
-import components.common.MyAppToolbar
 
 interface TopLevelIScreens : IScreens {
   companion object {
@@ -59,15 +57,6 @@ fun RootNavigation(
     val currentIScreen = currentScreen as IScreens
 
     Column(modifier = modifier.fillMaxSize()) {
-      val isToolbarInvisible =
-        (currentScreen == IScreens.Home) ||
-          (currentScreen == IScreens.Signin)
-      AnimatedVisibility(!isToolbarInvisible) {
-        MyAppToolbar(
-          title = currentScreen.getTitle(),
-          onNavigationIconClick = { navigator.pop() },
-        )
-      }
       Box(modifier = Modifier.weight(1f)) {
         AnimatedTransition(navigator)
       }

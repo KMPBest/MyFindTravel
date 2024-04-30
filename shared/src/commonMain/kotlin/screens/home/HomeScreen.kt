@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import components.common.Wrapper
 import components.home.CardViewBanner
 import components.home.CategoryItem
 import components.home.FlightInfoItem
@@ -57,54 +57,53 @@ fun HomeScreen(
   onNavigateFlightInfo: (FlightInfo) -> Unit,
 ) {
   val systemBarPaddingValues = WindowInsets.systemBars.asPaddingValues()
-  LazyColumn(
+  Wrapper(
     modifier =
-      Modifier.fillMaxSize()
-        .padding(
-          start = 30.dp,
-          end = 30.dp,
-          top = systemBarPaddingValues.calculateTopPadding(),
-        ),
+      Modifier.padding(
+        horizontal = 30.dp,
+      ),
   ) {
-    item { Spacer(modifier = Modifier.height(36.dp)) }
+    LazyColumn {
+      item { Spacer(modifier = Modifier.height(36.dp)) }
 
-    item {
-      Row(modifier = Modifier.fillMaxWidth()) {
-        Text(
-          modifier = Modifier.fillMaxWidth(0.5f),
-          text = "Find your travel plans with us",
-          style = MaterialTheme.typography.headlineLarge,
-          textAlign = TextAlign.Start,
-          color = Color.Black,
-        )
-        Spacer(modifier = Modifier.weight(1f))
+      item {
+        Row(modifier = Modifier.fillMaxWidth()) {
+          Text(
+            modifier = Modifier.fillMaxWidth(0.5f),
+            text = "Find your travel plans with us",
+            style = MaterialTheme.typography.headlineLarge,
+            textAlign = TextAlign.Start,
+            color = Color.Black,
+          )
+          Spacer(modifier = Modifier.weight(1f))
+        }
       }
-    }
 
-    item {
-      CardViewBanner()
-    }
+      item {
+        CardViewBanner()
+      }
 
-    item {
-      CategoryTitle()
-    }
+      item {
+        CategoryTitle()
+      }
 
-    item {
-      CategoriesSection(
+      item {
+        CategoriesSection(
+          modifier = Modifier.padding(top = 18.dp),
+          categories = uiState.categories,
+          onClickCategory = { categoryData ->
+            AppLogger.d(categoryData.toString())
+          },
+        )
+      }
+
+      top5FlightsSection(
         modifier = Modifier.padding(top = 18.dp),
-        categories = uiState.categories,
-        onClickCategory = { categoryData ->
-          AppLogger.d(categoryData.toString())
-        },
+        topFlightInfoList = uiState.topFlightInfoList,
+        onClickViewAll = onNavigateTop5Flights,
+        onNavigateFlightInfo = onNavigateFlightInfo,
       )
     }
-
-    top5FlightsSection(
-      modifier = Modifier.padding(top = 18.dp),
-      topFlightInfoList = uiState.topFlightInfoList,
-      onClickViewAll = onNavigateTop5Flights,
-      onNavigateFlightInfo = onNavigateFlightInfo,
-    )
   }
 }
 

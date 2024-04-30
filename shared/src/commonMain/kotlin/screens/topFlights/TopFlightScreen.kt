@@ -7,12 +7,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -41,13 +38,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import components.common.Header
 import components.common.MyAppCircularProgressIndicator
+import components.common.Wrapper
 import components.home.FlightInfoItem
 import configs.uis.Alabaster
 import configs.uis.Orange_alpha_12
 import domain.model.FlightInfo
 import domain.model.FlightLocation
 import domain.model.FlightSort
+import navigation.IScreens
 import utils.asState
 
 @Composable
@@ -69,14 +69,12 @@ fun TopFlightScreen(
   onSelectSort: (FlightSort) -> Unit,
   onNavigateFlightInfo: (FlightInfo) -> Unit,
 ) {
-  val systemBarPaddingValues = WindowInsets.systemBars.asPaddingValues()
-  Column(
-    modifier =
-      Modifier.fillMaxSize()
-        .padding(
-          top = systemBarPaddingValues.calculateTopPadding(),
-        ),
+  Wrapper(
+    topSafeArea = false,
   ) {
+    Header(
+      title = IScreens.TopFlight.getTitle(),
+    )
     SortByDropDown(
       modifier = Modifier.padding(top = 20.dp),
       sortBy = uiState.sortBy,

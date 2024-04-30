@@ -5,14 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,11 +25,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import components.common.Header
 import components.common.TitleDescription
+import components.common.Wrapper
 import components.more.ExpandableBoxItem
 import configs.uis.Orange_55
 import configs.uis.Red_48
 import configs.uis.Strings
+import navigation.IScreens
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
@@ -41,32 +41,36 @@ import utils.AppVersion
 @Composable
 fun AboutScreen() {
   var uiState by remember { mutableStateOf(AboutScreenUiState()) }
-  val systemBarPaddingValues = WindowInsets.systemBars.asPaddingValues()
   val appVersion = koinInject<AppVersion>()
 
-  LazyColumn(
-    modifier =
-      Modifier.fillMaxSize()
-        .padding(
-          start = 30.dp,
-          end = 30.dp,
-          top = systemBarPaddingValues.calculateTopPadding() + 30.dp,
-        ),
-  ) {
-    items(uiState.items, key = { it }) { item ->
-      ExpandableBoxItem(
-        text = item,
-        isExpanded = uiState.expandedItem == item,
-        onToggle = { uiState = uiState.copy(expandedItem = item) },
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 5.dp),
-      ) {
-        when (item) {
-          Strings.about_findtravelnow -> AboutFindTravelNowExpandedContent()
-          Strings.contact_details -> ContactDetailsExpandedContent()
-          Strings.app_details -> AppDetailsExpandedContent(appVersion.name())
+  Wrapper(topSafeArea = false) {
+    Header(
+      title = IScreens.About.getTitle(),
+    )
+    LazyColumn(
+      modifier =
+        Modifier.fillMaxSize()
+          .padding(
+            start = 30.dp,
+            end = 30.dp,
+            top = 30.dp,
+          ),
+    ) {
+      items(uiState.items, key = { it }) { item ->
+        ExpandableBoxItem(
+          text = item,
+          isExpanded = uiState.expandedItem == item,
+          onToggle = { uiState = uiState.copy(expandedItem = item) },
+          modifier =
+            Modifier
+              .fillMaxWidth()
+              .padding(horizontal = 4.dp, vertical = 5.dp),
+        ) {
+          when (item) {
+            Strings.about_findtravelnow -> AboutFindTravelNowExpandedContent()
+            Strings.contact_details -> ContactDetailsExpandedContent()
+            Strings.app_details -> AppDetailsExpandedContent(appVersion.name())
+          }
         }
       }
     }
